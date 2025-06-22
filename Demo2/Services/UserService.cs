@@ -1,39 +1,39 @@
+using Demo2.Data;
 using Demo2.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Demo2.Services
 {
     public class UserService
     {
-        private readonly List<User> _users = new();
-        private int _nextId = 1;
+        private readonly AppDbContext _context;
 
-        public IEnumerable<User> GetUsers() => _users;
+        public UserService(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<User> GetUsers() => _context.Users.AsNoTracking().ToList();
 
         public void AddUser(User user)
         {
-            user.Id = _nextId++;
-            _users.Add(user);
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
 
         public void UpdateUser(User user)
         {
-            var existing = _users.FirstOrDefault(u => u.Id == user.Id);
-            if (existing != null)
-            {
-                existing.Name = user.Name;
-                existing.Surname = user.Surname;
-                existing.Email = user.Email;
-                existing.PhoneNumber = user.PhoneNumber;
-                existing.Role = user.Role;
-            }
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
 
         public void DeleteUser(int id)
         {
-            var existing = _users.FirstOrDefault(u => u.Id == id);
+            var existing = _context.Users.Find(id);
             if (existing != null)
             {
-                _users.Remove(existing);
+                _context.Users.Remove(existing);
+                _context.SaveChanges();
             }
         }
     }
