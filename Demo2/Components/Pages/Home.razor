@@ -3,14 +3,10 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<button class="btn btn-primary" @onclick="NavigateToUsers">User Management</button>
+@* Automatically navigate to the user management screen on load *@
 
 @code {
-    void NavigateToUsers()
+    protected override void OnInitialized()
     {
         Navigation.NavigateTo("/users");
     }
