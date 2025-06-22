@@ -21,7 +21,10 @@ namespace Demo2.Services
             if (existing != null)
             {
                 existing.Name = user.Name;
+                existing.Surname = user.Surname;
                 existing.Email = user.Email;
+                existing.PhoneNumber = user.PhoneNumber;
+                existing.Role = user.Role;
             }
         }
 

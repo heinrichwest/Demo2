@@ -14,8 +14,20 @@
             <InputText @bind-Value="editingUser.Name" class="form-control" />
         </div>
         <div>
+            <label>Surname: </label>
+            <InputText @bind-Value="editingUser.Surname" class="form-control" />
+        </div>
+        <div>
             <label>Email: </label>
             <InputText @bind-Value="editingUser.Email" class="form-control" />
+        </div>
+        <div>
+            <label>Phone: </label>
+            <InputText @bind-Value="editingUser.PhoneNumber" class="form-control" />
+        </div>
+        <div>
+            <label>Role: </label>
+            <InputText @bind-Value="editingUser.Role" class="form-control" />
         </div>
         <button type="submit">@(editingUser.Id == 0 ? "Add" : "Save")</button>
         <button type="button" @onclick="CancelEdit">Cancel</button>
@@ -30,7 +42,10 @@ else
     <thead>
         <tr>
             <th>Name</th>
+            <th>Surname</th>
             <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
             <th></th>
         </tr>
     </thead>
@@ -39,7 +54,10 @@ else
         {
             <tr>
                 <td>@user.Name</td>
+                <td>@user.Surname</td>
                 <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.Role</td>
                 <td>
                     <button @onclick="() => EditUser(user)">Edit</button>
                     <button @onclick="() => DeleteUser(user.Id)">Delete</button>
@@ -63,7 +81,10 @@ else
         {
             Id = user.Id,
             Name = user.Name,
-            Email = user.Email
+            Surname = user.Surname,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            Role = user.Role
         };
     }
 
