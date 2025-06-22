@@ -1,0 +1,95 @@
+@page "/users"
+@inject Demo2.Services.UserService UserService
+
+<PageTitle>User Management</PageTitle>
+
+<h1>User Management</h1>
+
+@if (editingUser != null)
+{
+    <EditForm Model="editingUser" OnValidSubmit="SaveUser">
+        <DataAnnotationsValidator />
+        <div>
+            <label>Name: </label>
+            <InputText @bind-Value="editingUser.Name" class="form-control" />
+        </div>
+        <div>
+            <label>Email: </label>
+            <InputText @bind-Value="editingUser.Email" class="form-control" />
+        </div>
+        <button type="submit">@(editingUser.Id == 0 ? "Add" : "Save")</button>
+        <button type="button" @onclick="CancelEdit">Cancel</button>
+    </EditForm>
+}
+else
+{
+    <button @onclick="CreateUser">Add User</button>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in UserService.GetUsers())
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>
+                    <button @onclick="() => EditUser(user)">Edit</button>
+                    <button @onclick="() => DeleteUser(user.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private User? editingUser;
+
+    void CreateUser()
+    {
+        editingUser = new User();
+    }
+
+    void EditUser(User user)
+    {
+        editingUser = new User
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email
+        };
+    }
+
+    void DeleteUser(int id)
+    {
+        UserService.DeleteUser(id);
+    }
+
+    void SaveUser()
+    {
+        if (editingUser == null)
+            return;
+
+        if (editingUser.Id == 0)
+        {
+            UserService.AddUser(editingUser);
+        }
+        else
+        {
+            UserService.UpdateUser(editingUser);
+        }
+        editingUser = null;
+    }
+
+    void CancelEdit()
+    {
+        editingUser = null;
+    }
+}
